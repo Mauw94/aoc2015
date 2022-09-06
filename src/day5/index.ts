@@ -12,7 +12,6 @@ class Day5 extends Day {
     // doest not containt strings 'ab' 'cd' 'pq' 'xy'
 
     solveForPartOne(input: string): string {
-        // var isNice = this.applyRules('dvszwmarrgswjxmb');
         var niceCounter = 0;
         var strings = input.split('\n');
         var isNice = false;
@@ -21,13 +20,11 @@ class Day5 extends Day {
             isNice = this.applyRules(string) as boolean;
             if (isNice) niceCounter++;
         });
-        console.log(niceCounter);
 
         return niceCounter.toString();;
     }
 
     solveForPartTwo(input: string): string {
-        // var result = this.applyRulesP2('uurcxstgmygtbstg');
         var niceCounter = 0;
         var strings = input.split('\n');
         var isNice = false
@@ -36,8 +33,6 @@ class Day5 extends Day {
             isNice = this.applyRulesP2(string) as boolean;
             if (isNice) niceCounter++;
         });
-
-        console.log(niceCounter);
 
         return niceCounter.toString();
     }
@@ -80,30 +75,21 @@ class Day5 extends Day {
         var letterPairs = new Map<string, number>();
         for (let i = 0; i < chars.length; i++) {
             if (i + 1 > chars.length) break
-            // console.log(letterPairs.get(chars[i] + chars[i + 1]))
             if (letterPairs.get(chars[i] + chars[i + 1]) === undefined)
-                letterPairs.set(chars[i] + chars[i + 1], 1)
+                letterPairs.set(chars[i] + chars[i + 1], i)
             else {
                 // rule out overlapping
-                if (i + 2 > chars.length || i - 1 < 0) break;
-
-                if (chars[i] !== chars[i + 2]
-                    || chars[i - 1] !== chars[i]
-                    || chars[i + 1] !== chars[i + 2]
-                    || chars[i + 1] !== chars[i - 1])
-                    contains = true;
+                var index = letterPairs.get(chars[i] + chars[i + 1]) as number;
+                if (index + 2 > chars.length) break;
+                if (chars[index] === chars[index + 1] && chars[index] === chars[index + 2])
+                    contains = false
+                else
+                    contains = true
 
                 break;
             }
         }
         var repeat = this.checkRepeat(chars);
-
-        // console.log('repeat')
-        // console.log(repeat)
-
-        // console.log('contains')
-        // console.log(contains)
-        // console.log(letterPairs)
 
         return contains && repeat;
     }
