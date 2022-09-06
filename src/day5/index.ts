@@ -27,8 +27,19 @@ class Day5 extends Day {
     }
 
     solveForPartTwo(input: string): string {
-        var result = this.applyRulesP2('qjhvhtzxzqqjkmpb');
-        return input;
+        // var result = this.applyRulesP2('uurcxstgmygtbstg');
+        var niceCounter = 0;
+        var strings = input.split('\n');
+        var isNice = false
+
+        strings.forEach(string => {
+            isNice = this.applyRulesP2(string) as boolean;
+            if (isNice) niceCounter++;
+        });
+
+        console.log(niceCounter);
+
+        return niceCounter.toString();
     }
 
     private applyRules(input: string) {
@@ -68,22 +79,43 @@ class Day5 extends Day {
         var contains = false;
         var letterPairs = new Map<string, number>();
         for (let i = 0; i < chars.length; i++) {
-            if (i + 1 > chars.length) return
-            if (letterPairs.get(chars[i] + chars[i + 1]) === null)
+            if (i + 1 > chars.length) break
+            // console.log(letterPairs.get(chars[i] + chars[i + 1]))
+            if (letterPairs.get(chars[i] + chars[i + 1]) === undefined)
                 letterPairs.set(chars[i] + chars[i + 1], 1)
             else {
-                contains = true;
-                return;
+                // rule out overlapping
+                if (i + 2 > chars.length || i - 1 < 0) break;
+
+                if (chars[i] !== chars[i + 2]
+                    || chars[i - 1] !== chars[i]
+                    || chars[i + 1] !== chars[i + 2]
+                    || chars[i + 1] !== chars[i - 1])
+                    contains = true;
+
+                break;
             }
         }
-        return contains;
+        var repeat = this.checkRepeat(chars);
+
+        // console.log('repeat')
+        // console.log(repeat)
+
+        // console.log('contains')
+        // console.log(contains)
+        // console.log(letterPairs)
+
+        return contains && repeat;
     }
 
-    private checkRepeat(input: string) {
-        var chars = input.split('');
+    private checkRepeat(chars: string[]) {
+        var repeat = false;
         for (let i = 0; i < chars.length; i++) {
-            if (i + 2 > chars.length) return;
+            if (i + 2 > chars.length) break;
+            if (chars[i] === chars[i + 2]) repeat = true;
         }
+
+        return repeat;
     }
 }
 
