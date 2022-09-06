@@ -27,6 +27,7 @@ class Day5 extends Day {
     }
 
     solveForPartTwo(input: string): string {
+        var result = this.applyRulesP2('qjhvhtzxzqqjkmpb');
         return input;
     }
 
@@ -60,6 +61,29 @@ class Day5 extends Day {
 
 
         return doubleLetter && threeVowels && !containsString;
+    }
+
+    private applyRulesP2(input: string) {
+        var chars = input.split('');
+        var contains = false;
+        var letterPairs = new Map<string, number>();
+        for (let i = 0; i < chars.length; i++) {
+            if (i + 1 > chars.length) return
+            if (letterPairs.get(chars[i] + chars[i + 1]) === null)
+                letterPairs.set(chars[i] + chars[i + 1], 1)
+            else {
+                contains = true;
+                return;
+            }
+        }
+        return contains;
+    }
+
+    private checkRepeat(input: string) {
+        var chars = input.split('');
+        for (let i = 0; i < chars.length; i++) {
+            if (i + 2 > chars.length) return;
+        }
     }
 }
 
